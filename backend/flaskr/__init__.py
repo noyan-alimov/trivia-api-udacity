@@ -3,6 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
+import json
 
 from models import setup_db, Question, Category
 
@@ -269,7 +270,10 @@ def create_app(test_config=None):
                 else:
                     selected = []
 
-            result = random.choice(selected)
+            if len(selected) == 0:
+                result = None
+            else:
+                result = random.choice(selected)
 
             return jsonify({
                 'success': True,

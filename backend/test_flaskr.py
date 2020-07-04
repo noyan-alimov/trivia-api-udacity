@@ -108,7 +108,7 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_search_questions_with_results(self):
         res = self.client().post('/questions/search',
-                                 json={'search': 'title'})
+                                 json={'searchTerm': 'name'})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -118,7 +118,7 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_search_questions_without_results(self):
         res = self.client().post('/questions/search',
-                                 json={'search': 'askjdfhaskfjhask'})
+                                 json={'searchTerm': 'askjdfhaskfjhask'})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -147,8 +147,11 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_play_quizz(self):
         res = self.client().post('/quizzes', json={
-            'quiz_category': 1,
-            'previous_questions': []
+            'quiz_category': {
+                "type": "entertainment",
+                "id": 4
+            },
+            'previous_questions': [1, 2]
         })
         data = json.loads(res.data)
 
@@ -158,8 +161,11 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_if_playing_quizz_is_not_allowed(self):
         res = self.client().post('/quizzes/32', json={
-            'quiz_category': 1,
-            'previous_questions': []
+            'quiz_category': {
+                "type": "entertainment",
+                "id": 4
+            },
+            'previous_questions': [1, 2]
         })
         data = json.loads(res.data)
 
